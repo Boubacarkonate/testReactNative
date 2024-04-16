@@ -13,24 +13,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20'
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Run unit tests
-      run: npm test 
-      
-    - name: SonarQube Scan
-      run: 
-        docker run -e SONAR_HOST_URL="http://localhost:9000" -e SONAR_LOGIN="sqa_0216dd84fad4a99871204b613193ab6a6b021f17" sonarsource/sonar-scanner-cli:latest
-      
+      - name: Run unit tests
+        run: npm test 
 
-    - name: expo start
-      run: npx expo start
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions: read-all
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: SonarQube analysis
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      # Si vous souhaitez échouer votre job lorsque la qualité est rouge, décommentez les
+      # lignes suivantes. Cela serait généralement utilisé pour échouer un déploiement.
+      # - uses: sonarsource/sonarqube-quality-gate-action@master
+      #   timeout-minutes: 5
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
