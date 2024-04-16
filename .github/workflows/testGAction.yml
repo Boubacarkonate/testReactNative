@@ -29,6 +29,7 @@ jobs:
   sonarcloud:
     name: SonarCloud
     runs-on: ubuntu-latest
+    permissions: read-all
     needs: test
     steps:
       - uses: actions/checkout@v2
