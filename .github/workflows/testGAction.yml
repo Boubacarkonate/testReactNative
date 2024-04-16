@@ -31,7 +31,7 @@ jobs:
       run: |
         docker run \
           --rm \
-          -e SONAR_HOST_URL="http://localhost:9000" \
+          -e SONAR_HOST_URL="http://localhost:9000/projects" \
           -e SONAR_LOGIN="sqa_0216dd84fad4a99871204b613193ab6a6b021f17" \
           sonarsource/sonar-scanner-cli:latest
 
