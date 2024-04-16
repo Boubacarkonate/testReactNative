@@ -29,7 +29,7 @@ jobs:
       
     - name: SonarQube Scan
       run: 
-          SONAR_HOST_URL="http://localhost:9000/" \
+          SONAR_HOST_URL="http://localhost:9000" \
           SONAR_LOGIN="sqa_0216dd84fad4a99871204b613193ab6a6b021f17" \
           sonarsource/sonar-scanner-cli:latest
 
